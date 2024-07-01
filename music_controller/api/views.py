@@ -7,8 +7,8 @@ from .serializers import RoomSerializer
 # These are also known as request handlers or request-response handlers
 
 
-# This is a view that inherits from the CreateAPIView class from the rest_framework module
-# This class is used to create a new room or return to us a list of all rooms
-class RoomView(generics.CreateAPIView):
+# This is a view that inherits from the ListAPIView class from the rest_framework module
+# This class is used to return to us a list of all rooms
+class RoomView(generics.ListAPIView):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
