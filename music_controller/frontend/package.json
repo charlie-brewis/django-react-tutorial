@@ -18,5 +18,8 @@
     "react-dom": "^18.3.1",
     "webpack": "^5.92.1",
     "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "@mui/material": "^5.15.21"
   }
 }
