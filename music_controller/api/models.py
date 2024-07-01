@@ -14,6 +14,7 @@ def generate_unique_code():
 
 # Models are just a layer of abstraction of database tables
 # They allow us to define entities using python classes
+# Note that the primary key (e.g., room_id) is automatically handled by Django and so we do not define it here
 #* Note by convention, in Django, we want fat models and thin views
 class Room(models.Model):
     '''
