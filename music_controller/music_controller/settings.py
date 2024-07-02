@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # Add the config of the api app
     'api.apps.ApiConfig',
     'rest_framework',
+    'frontend.apps.FrontendConfig',
 ]
 
 MIDDLEWARE = [
