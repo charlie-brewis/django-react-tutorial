@@ -9,14 +9,49 @@ import { Link } from "react-router-dom";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { FormLabel } from "@mui/material";
 
 export default class RoomCreatePage extends Component {
     defaultVotes = 2;
 
     constructor(props) {
         super(props);
+        this.state = {
+            guestsCanPause: true,
+            votesToSkip: this.defaultVotes,
+        };
     }
+
+    // Use arrow functions for handle methods as they can infer `this` binding
+    handleVotesChange = (e) => {
+        // No Type conversion from string to int needed because we will be stringifying JSON anyway
+        this.setState({
+            votesToSkip: e.target.value,
+        });
+    };
+
+    handleGuestsCanPauseChange = (e) => {
+        this.setState({
+            guestsCanPause: e.target.value === "true" ? true : false,
+        });
+    };
+
+    handleCreateRoomButtonPressed = () => {
+        const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            // Note use of snake case to keep JSON consistent with CreateRoomView
+            body: JSON.stringify({
+                guest_can_pause: this.state.guestsCanPause,
+                votes_to_skip: this.state.votesToSkip,
+            }),
+        };
+        // Send a fetch request of the defined options above
+        // Then convert the response to JSON
+        // Then log that JSON data
+        fetch("/api/create-room", requestOptions)
+            .then((response) => response.json())
+            .then((data) => console.log(data));
+    };
 
     render() {
         return (
@@ -31,7 +66,11 @@ export default class RoomCreatePage extends Component {
                         <FormHelperText align="center">
                             Guest Control of Playback State
                         </FormHelperText>
-                        <RadioGroup row defaultValue="true">
+                        <RadioGroup
+                            row
+                            defaultValue="true"
+                            onChange={this.handleGuestsCanPauseChange}
+                        >
                             <FormControlLabel
                                 value="true"
                                 control={<Radio color="primary" />}
@@ -52,6 +91,7 @@ export default class RoomCreatePage extends Component {
                         <TextField
                             required={true}
                             type="number"
+                            onChange={this.handleVotesChange}
                             defaultValue={this.defaultVotes}
                             inputProps={{
                                 min: 1,
@@ -62,7 +102,11 @@ export default class RoomCreatePage extends Component {
                     </FormControl>
                 </Grid>
                 <Grid item xs={12} align="center">
-                    <Button color="primary" variant="contained">
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={this.handleCreateRoomButtonPressed}
+                    >
                         Create Room
                     </Button>
                 </Grid>
