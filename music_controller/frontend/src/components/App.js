@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import HomePage from "./HomePage";
 import RoomJoinPage from "./RoomJoinPage";
 import RoomCreatePage from "./RoomCreatePage";
 
-export default class App extends Component {
+export class App extends React.Component {
     constructor(props) {
         super(props);
     }
