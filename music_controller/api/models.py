@@ -26,7 +26,7 @@ class Room(models.Model):
         - votes_to_skip: the number of votes needed to skip a song
         - created_at: the time the room was created
     '''
-    code = models.CharField(max_length=8, default="", unique=True)
+    code = models.CharField(max_length=8, default=generate_unique_code, unique=True)
     # host is unqiue because we don't want multiple rooms with the same host
     host = models.CharField(max_length=50, unique=True)
     guest_can_pause = models.BooleanField(null=False, default=False)
