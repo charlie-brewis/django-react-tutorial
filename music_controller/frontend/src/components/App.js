@@ -1,7 +1,7 @@
-import React, { Component, component } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 
-export default class App extends Component {
+export class App extends React.Component {
     constructor(props) {
         super(props);
     }
