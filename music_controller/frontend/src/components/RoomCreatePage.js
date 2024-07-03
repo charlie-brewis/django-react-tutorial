@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import { FormLabel } from "@mui/material";
 
 export default class RoomCreatePage extends Component {
     defaultVotes = 2;
@@ -24,6 +25,51 @@ export default class RoomCreatePage extends Component {
                     <Typography component="h4" variant="h4">
                         Create A Room
                     </Typography>
+                </Grid>
+                <Grid item xs={12} align="center">
+                    <FormControl component="fieldset">
+                        <FormHelperText align="center">
+                            Guest Control of Playback State
+                        </FormHelperText>
+                        <RadioGroup row defaultValue="true">
+                            <FormControlLabel
+                                value="true"
+                                control={<Radio color="primary" />}
+                                label="Play/Pause"
+                                labelPlacement="bottom"
+                            />
+                            <FormControlLabel
+                                value="false"
+                                control={<Radio color="secondary" />}
+                                label="No Control"
+                                labelPlacement="bottom"
+                            />
+                        </RadioGroup>
+                    </FormControl>
+                </Grid>
+                <Grid item xs={12} align="center">
+                    <FormControl>
+                        <TextField
+                            required={true}
+                            type="number"
+                            defaultValue={this.defaultVotes}
+                            inputProps={{
+                                min: 1,
+                                style: { textAlign: "center" },
+                            }}
+                        />
+                        <FormHelperText align="center">Votes Required To Skip Song</FormHelperText>
+                    </FormControl>
+                </Grid>
+                <Grid item xs={12} align="center">
+                    <Button color="primary" variant="contained">
+                        Create Room
+                    </Button>
+                </Grid>
+                <Grid item xs={12} align="center">
+                    <Button color="secondary" variant="contained" to="/" component={Link}>
+                        Back
+                    </Button>
                 </Grid>
             </Grid>
         );
