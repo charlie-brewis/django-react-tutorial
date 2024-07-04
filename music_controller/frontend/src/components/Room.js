@@ -9,15 +9,13 @@ class Room extends React.Component {
             guestCanPause: false,
             isHost: false,
         };
-        console.log(this.state);
 
-        // match is a prop that react-router adds to any visited route, it holds all the URL parameters
+        // params is a prop we've added by wrapping this component with the withRouter HOC
         this.roomCode = this.props.params.roomCode;
     }
 
     componentDidMount() {
         this.getRoomDetails();
-        console.log(this.state);
     }
 
     getRoomDetails() {
