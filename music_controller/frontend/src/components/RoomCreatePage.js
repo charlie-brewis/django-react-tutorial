@@ -9,8 +9,9 @@ import { Link } from "react-router-dom";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import withNavigate from "./higherOrderComponents/withNavigate";
 
-export default class RoomCreatePage extends Component {
+class RoomCreatePage extends Component {
     defaultVotes = 2;
 
     constructor(props) {
@@ -50,7 +51,7 @@ export default class RoomCreatePage extends Component {
         // Then log that JSON data
         fetch("/api/create-room", requestOptions)
             .then((response) => response.json())
-            .then((data) => console.log(data));
+            .then((data) => this.props.navigate("/room/" + data.code));
     };
 
     render() {
@@ -119,3 +120,5 @@ export default class RoomCreatePage extends Component {
         );
     }
 }
+
+export default withNavigate(RoomCreatePage);

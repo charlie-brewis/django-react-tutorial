@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 
-// This component allows us to wrap components so that they can receive URL parameters as props.params
+// This HOC allows us to wrap components so that they can receive URL parameters as props.params
 
 const withRouter = (Component) => {
     return (props) => {

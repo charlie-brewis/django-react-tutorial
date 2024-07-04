@@ -1,6 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
-import withRouter from "./withRouter";
+import withRouter from "./higherOrderComponents/withRouter";
 
 class Room extends React.Component {
     constructor(props) {
