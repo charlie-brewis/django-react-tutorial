@@ -15,6 +15,25 @@ class RoomView(generics.ListAPIView):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
 
+class GetRoom(APIView):
+    serializer_class = RoomSerializer
+    lookup_url_kwarg = 'code'
+
+    def get(self, request, format=None):
+        # Get the room code from the url request
+        code = request.GET.get(self.lookup_url_kwarg)
+        if code != None:
+            room = Room.objects.filter(code=code)
+            # If the room exists, return the serialized room data
+            if len(room) > 0:
+                data = RoomSerializer(room[0]).data
+                # If the current user is the host of the room, set is_host to True
+                data['is_host'] = self.request.session.session_key == room[0].host
+                return Response(data, status=status.HTTP_200_OK)
+            return Response({'Room Not Found': 'Invalid Room Code.'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'Bad Request': 'Code parameter not found in request'}, status=status.HTTP_400_BAD_REQUEST)
+
+
 # The APIView class gives us standard GET POST PUT DELETE methods that we can then override
 class CreateRoomView(APIView):
     serializer_class = CreateRoomSerializer
