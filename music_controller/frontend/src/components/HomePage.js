@@ -3,11 +3,14 @@ import RoomJoinPage from "./RoomJoinPage";
 import RoomCreatePage from "./RoomCreatePage";
 import Room from "./Room";
 import { Grid, Button, ButtonGroup, Typography } from "@mui/material";
-import { BrowserRouter as Router, Routes, Route, Link, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom";
 
 export default class HomePage extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            roomCode: null,
+        };
     }
 
     // componentDidMount is a react lifecycle method - these control different stages of your component's lifecycle
@@ -16,7 +19,11 @@ export default class HomePage extends Component {
     async componentDidMount() {
         fetch("/api/user-in-room")
             .then((resposne) => resposne.json())
-            .then((data) => {});
+            .then((data) => {
+                this.setState({
+                    roomCode: data.code,
+                });
+            });
     }
 
     renderHomePage() {
@@ -46,7 +53,11 @@ export default class HomePage extends Component {
             // This block acts like a html switch statement, routing to each route depending on the url
             <Router>
                 <Routes>
-                    <Route path="/" element={this.renderHomePage()} />
+                    <Route
+                        path="/"
+                        // if this.state.roomCode is null, render the home page, else, render to the room page
+                        element={this.state.roomCode ? (<Navigate to={`/room/${this.state.roomCode}`} />) : (this.renderHomePage())}
+                    />
                     <Route path="/join" element={<RoomJoinPage />} />
                     <Route path="/create" element={<RoomCreatePage />} />
                     <Route path="/room/:roomCode" element={<Room />} />
