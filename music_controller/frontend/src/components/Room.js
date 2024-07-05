@@ -1,5 +1,7 @@
 import React from "react";
 import withRouter from "./higherOrderComponents/withRouter";
+import { Grid, Button, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 class Room extends React.Component {
     constructor(props) {
@@ -32,14 +34,42 @@ class Room extends React.Component {
 
     render() {
         return (
-            <div>
-                <h3>{this.roomCode}</h3>
-                <p>Votes: {this.state.votesToSkip}</p>
-                <p>Guest Can Pause: {this.state.guestCanPause.toString()}</p>
-                <p>isHost: {this.state.isHost.toString()}</p>
-            </div>
+            <Grid container spacing={1} align="center">
+                <Grid item xs={12}>
+                    <Typography variant="h4" component="h4">
+                        Code: {this.roomCode}
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    <Typography variant="h6" component="h6">
+                        Votes: {this.state.votesToSkip}
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    <Typography variant="h6" component="h6">
+                        Guest Can Pause: {this.state.guestCanPause.toString()}
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    <Typography variant="h6" component="h6">
+                        isHost: {this.state.isHost.toString()}
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    <Button variant="contained" color="secondary" to="/" component={Link}>
+                        Leave Room
+                    </Button>
+                </Grid>
+            </Grid>
         );
     }
 }
 
 export default withRouter(Room);
+
+// <div>
+//     <h3>{this.roomCode}</h3>
+//     <p>Votes: {this.state.votesToSkip}</p>
+//     <p>Guest Can Pause: {this.state.guestCanPause.toString()}</p>
+//     <p>isHost: {this.state.isHost.toString()}</p>
+// </div>
