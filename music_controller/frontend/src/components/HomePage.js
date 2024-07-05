@@ -10,6 +10,15 @@ export default class HomePage extends Component {
         super(props);
     }
 
+    // componentDidMount is a react lifecycle method - these control different stages of your component's lifecycle
+    // componentDidMount runs after the component first renders onto the screen
+    // Note, normally we dont need async for this method, but since we are performing an async operation inside it, we do
+    async componentDidMount() {
+        fetch("/api/user-in-room")
+            .then((resposne) => resposne.json())
+            .then((data) => {});
+    }
+
     renderHomePage() {
         return (
             <Grid container spacing={3} align="center">
