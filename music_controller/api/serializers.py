@@ -17,3 +17,11 @@ class CreateRoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
         fields = ('guest_can_pause', 'votes_to_skip')
+
+class UpdateRoomSerializer(serializers.ModelSerializer):
+    '''This class is used to serialise a request into a Django format'''
+    # Redefine the code field to not require validation, i.e., unique != True
+    code = serializers.CharField(validators=[])
+    class Meta:
+        model = Room
+        fields = ('guest_can_pause', 'votes_to_skip', 'code')
