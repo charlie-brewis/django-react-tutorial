@@ -46,9 +46,9 @@ class RoomCreatePage extends Component {
                 votes_to_skip: this.state.votesToSkip,
             }),
         };
-        // Send a fetch request of the defined options above
+        // Send a post request of the defined options above
         // Then convert the response to JSON
-        // Then log that JSON data
+        // Then navigate to the new room
         fetch("/api/create-room", requestOptions)
             .then((response) => response.json())
             .then((data) => this.props.navigate("/room/" + data.code));

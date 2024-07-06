@@ -88,16 +88,18 @@ class JoinRoom(APIView):
             self.request.session.create()
 
         code = request.data.get(self.lookup_url_kwarg)
-        if code != None:
-            room_result = Room.objects.filter(code=code)
-            if len(room_result) > 0:
-                room = room_result[0]
-                # Store the room code in the session, a session is a way to store information about a user from one request to another
-                self.request.session['room_code'] = code
-                return Response({'message': 'Room Joined!'}, status=status.HTTP_200_OK)
+        if code == None:
+            return Response({'Bad Request': 'Invalid post data, did not find room code key'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        room_result = Room.objects.filter(code=code)
+        if len(room_result) == 0:
             return Response({'Bad Request': 'Invalid Room Code'}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({'Bad Request': 'Invalid post data, did not find room code key'}, status=status.HTTP_400_BAD_REQUEST)
-    
+        
+        room = room_result[0]
+        # Store the room code in the session, a session is a way to store information about a user from one request to another
+        self.request.session['room_code'] = code
+        return Response({'message': 'Room Joined!'}, status=status.HTTP_200_OK)
+
 
 
 class UserInRoom(APIView):
@@ -110,3 +112,17 @@ class UserInRoom(APIView):
             'code': self.request.session.get('room_code')
         }
         return JsonResponse(data, status=status.HTTP_200_OK)
+    
+
+class LeaveRoom(APIView):
+    ''' Remove the user from the room by deleting the room code from the user session '''
+    def post(self, request, format=None):
+        if 'room_code' in self.request.session:
+            self.request.session.pop('room_code')
+            # If the user is the room host, delete the room from the database
+            host_id = self.request.session.session_key
+            room_results = Room.objects.filter(host=host_id)
+            if len(room_results) > 0:
+                room = room_results[0]
+                room.delete()
+        return Response({'Message': 'Success'}, status=status.HTTP_200_OK)

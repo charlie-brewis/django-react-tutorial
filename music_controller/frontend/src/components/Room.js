@@ -1,7 +1,7 @@
 import React from "react";
 import withRouter from "./higherOrderComponents/withRouter";
+import withNavigate from "./higherOrderComponents/withNavigate";
 import { Grid, Button, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
 
 class Room extends React.Component {
     constructor(props) {
@@ -22,7 +22,14 @@ class Room extends React.Component {
 
     getRoomDetails() {
         fetch("/api/get-room" + "?code=" + this.roomCode)
-            .then((response) => response.json())
+            .then((response) => {
+                // If the response is invalid, i.e., the room doesnt exist on the db, return to the home page
+                if (!response.ok) {
+                    this.props.leaveRoomCallback();
+                    this.props.navigate("/");
+                }
+                return response.json();
+            })
             .then((data) => {
                 this.setState({
                     votesToSkip: data.votes_to_skip,
@@ -31,6 +38,17 @@ class Room extends React.Component {
                 });
             });
     }
+
+    handleLeaveRoomButtonPressed = () => {
+        const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+        };
+        fetch("/api/leave-room", requestOptions).then((response) => {
+            this.props.leaveRoomCallback();
+            this.props.navigate("/");
+        });
+    };
 
     render() {
         return (
@@ -56,7 +74,11 @@ class Room extends React.Component {
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                    <Button variant="contained" color="secondary" to="/" component={Link}>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={this.handleLeaveRoomButtonPressed}
+                    >
                         Leave Room
                     </Button>
                 </Grid>
@@ -65,11 +87,4 @@ class Room extends React.Component {
     }
 }
 
-export default withRouter(Room);
-
-// <div>
-//     <h3>{this.roomCode}</h3>
-//     <p>Votes: {this.state.votesToSkip}</p>
-//     <p>Guest Can Pause: {this.state.guestCanPause.toString()}</p>
-//     <p>isHost: {this.state.isHost.toString()}</p>
-// </div>
+export default withNavigate(withRouter(Room));

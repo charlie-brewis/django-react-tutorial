@@ -48,6 +48,8 @@ export default class HomePage extends Component {
         );
     }
 
+    clearRoomCode = () => this.setState({ roomCode: null });
+
     render() {
         return (
             // This block acts like a html switch statement, routing to each route depending on the url
@@ -56,11 +58,20 @@ export default class HomePage extends Component {
                     <Route
                         path="/"
                         // if this.state.roomCode is null, render the home page, else, render to the room page
-                        element={this.state.roomCode ? (<Navigate to={`/room/${this.state.roomCode}`} />) : (this.renderHomePage())}
+                        element={
+                            this.state.roomCode ? (
+                                <Navigate to={`/room/${this.state.roomCode}`} />
+                            ) : (
+                                this.renderHomePage()
+                            )
+                        }
                     />
                     <Route path="/join" element={<RoomJoinPage />} />
                     <Route path="/create" element={<RoomCreatePage />} />
-                    <Route path="/room/:roomCode" element={<Room />} />
+                    <Route
+                        path="/room/:roomCode"
+                        element={<Room leaveRoomCallback={this.clearRoomCode} />}
+                    />
                 </Routes>
             </Router>
         );
