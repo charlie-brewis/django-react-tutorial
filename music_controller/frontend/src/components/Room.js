@@ -1,6 +1,7 @@
 import React from "react";
 import withRouter from "./higherOrderComponents/withRouter";
 import withNavigate from "./higherOrderComponents/withNavigate";
+import RoomCreatePage from "./RoomCreatePage";
 import { Grid, Button, Typography } from "@mui/material";
 
 class Room extends React.Component {
@@ -10,6 +11,7 @@ class Room extends React.Component {
             votesToSkip: 2,
             guestCanPause: false,
             isHost: false,
+            showingSettings: false,
         };
 
         // params is a prop we've added by wrapping this component with the withRouter HOC
@@ -50,7 +52,45 @@ class Room extends React.Component {
         });
     };
 
+    updateShowingSettings = (value) => this.setState({ showingSettings: value });
+
+    renderSettingsButton = () => (
+        <Grid item xs={12}>
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={() => this.updateShowingSettings(true)}
+            >
+                Settings
+            </Button>
+        </Grid>
+    );
+
+    renderSettingsPage = () => (
+        <Grid container spacing={1} align="center">
+            <Grid item xs={12}>
+                <RoomCreatePage
+                    update={true}
+                    votesToSkip={this.state.votesToSkip}
+                    guestCanPause={this.state.guestCanPause}
+                    roomCode={this.roomCode}
+                    updateCallback={() => {}}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => this.updateShowingSettings(false)}
+                >
+                    Close
+                </Button>
+            </Grid>
+        </Grid>
+    );
+
     render() {
+        if (this.state.showingSettings) return this.renderSettingsPage();
         return (
             <Grid container spacing={1} align="center">
                 <Grid item xs={12}>
@@ -73,6 +113,7 @@ class Room extends React.Component {
                         isHost: {this.state.isHost.toString()}
                     </Typography>
                 </Grid>
+                {this.state.isHost ? this.renderSettingsButton() : null}
                 <Grid item xs={12}>
                     <Button
                         variant="contained"
