@@ -5,6 +5,7 @@ import {
     Button,
     Grid,
     Typography,
+    TextField,
     FormHelperText,
     FormControl,
     FormControlLabel,
@@ -13,13 +14,19 @@ import {
 } from "@mui/material";
 
 class RoomCreatePage extends Component {
-    defaultVotes = 2;
+    static defaultProps = {
+        votesToSkip: 2,
+        guestsCanPause: true,
+        update: false,
+        roomCode: null,
+        updateCallback: () => {},
+    };
 
     constructor(props) {
         super(props);
         this.state = {
-            guestsCanPause: true,
-            votesToSkip: this.defaultVotes,
+            guestsCanPause: this.props.guestsCanPause,
+            votesToSkip: this.props.votesToSkip,
         };
     }
 
@@ -94,7 +101,7 @@ class RoomCreatePage extends Component {
                             required={true}
                             type="number"
                             onChange={this.handleVotesChange}
-                            defaultValue={this.defaultVotes}
+                            defaultValue={this.state.votesToSkip}
                             inputProps={{
                                 min: 1,
                                 style: { textAlign: "center" },
