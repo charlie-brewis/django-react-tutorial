@@ -62,21 +62,53 @@ class RoomCreatePage extends Component {
             .then((data) => this.props.navigate("/room/" + data.code));
     };
 
+    renderCreateButtons = () => (
+        <Grid container spacing={1} align="center">
+            <Grid item xs={12}>
+                <Button
+                    color="primary"
+                    variant="contained"
+                    onClick={this.handleCreateRoomButtonPressed}
+                >
+                    Create Room
+                </Button>
+            </Grid>
+            <Grid item xs={12}>
+                <Button color="secondary" variant="contained" to="/" component={Link}>
+                    Back
+                </Button>
+            </Grid>
+        </Grid>
+    );
+
+    renderUpdateButtons = () => (
+        <Grid item xs={12}>
+            <Button
+                color="primary"
+                variant="contained"
+                onClick={this.handleCreateRoomButtonPressed}
+            >
+                Update Room
+            </Button>
+        </Grid>
+    );
+
     render() {
+        const title = this.props.update ? "Update Room" : "Create a Room";
+
         return (
-            <Grid container spacing={1}>
-                <Grid item xs={12} align="center">
+            <Grid container spacing={1} align="center">
+                <Grid item xs={12}>
                     <Typography component="h4" variant="h4">
-                        Create A Room
+                        {title}
                     </Typography>
                 </Grid>
-                <Grid item xs={12} align="center">
+                <Grid item xs={12}>
                     <FormControl component="fieldset">
-                        <FormHelperText align="center">
-                            Guest Control of Playback State
-                        </FormHelperText>
+                        <FormHelperText>Guest Control of Playback State</FormHelperText>
                         <RadioGroup
                             row
+                            //todo use state
                             defaultValue="true"
                             onChange={this.handleGuestsCanPauseChange}
                         >
@@ -95,7 +127,7 @@ class RoomCreatePage extends Component {
                         </RadioGroup>
                     </FormControl>
                 </Grid>
-                <Grid item xs={12} align="center">
+                <Grid item xs={12}>
                     <FormControl>
                         <TextField
                             required={true}
@@ -107,23 +139,10 @@ class RoomCreatePage extends Component {
                                 style: { textAlign: "center" },
                             }}
                         />
-                        <FormHelperText align="center">Votes Required To Skip Song</FormHelperText>
+                        <FormHelperText>Votes Required To Skip Song</FormHelperText>
                     </FormControl>
                 </Grid>
-                <Grid item xs={12} align="center">
-                    <Button
-                        color="primary"
-                        variant="contained"
-                        onClick={this.handleCreateRoomButtonPressed}
-                    >
-                        Create Room
-                    </Button>
-                </Grid>
-                <Grid item xs={12} align="center">
-                    <Button color="secondary" variant="contained" to="/" component={Link}>
-                        Back
-                    </Button>
-                </Grid>
+                {this.props.update ? this.renderUpdateButtons() : this.renderCreateButtons()}
             </Grid>
         );
     }
