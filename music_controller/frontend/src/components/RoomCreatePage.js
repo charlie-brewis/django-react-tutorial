@@ -85,6 +85,7 @@ class RoomCreatePage extends Component {
                     errorMessage: "Error updating room...",
                 });
             }
+            this.props.updateCallback();
         });
     };
 

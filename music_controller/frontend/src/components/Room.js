@@ -9,7 +9,7 @@ class Room extends React.Component {
         super(props);
         this.state = {
             votesToSkip: 2,
-            guestCanPause: false,
+            guestsCanPause: false,
             isHost: false,
             showingSettings: false,
         };
@@ -22,7 +22,7 @@ class Room extends React.Component {
         this.getRoomDetails();
     }
 
-    getRoomDetails() {
+    getRoomDetails = () => {
         fetch("/api/get-room" + "?code=" + this.roomCode)
             .then((response) => {
                 // If the response is invalid, i.e., the room doesnt exist on the db, return to the home page
@@ -35,11 +35,11 @@ class Room extends React.Component {
             .then((data) => {
                 this.setState({
                     votesToSkip: data.votes_to_skip,
-                    guestCanPause: data.guest_can_pause,
+                    guestsCanPause: data.guest_can_pause,
                     isHost: data.is_host,
                 });
             });
-    }
+    };
 
     handleLeaveRoomButtonPressed = () => {
         const requestOptions = {
@@ -72,9 +72,9 @@ class Room extends React.Component {
                 <RoomCreatePage
                     update={true}
                     votesToSkip={this.state.votesToSkip}
-                    guestsCanPause={this.state.guestCanPause}
+                    guestsCanPause={this.state.guestsCanPause}
                     roomCode={this.roomCode}
-                    updateCallback={() => {}}
+                    updateCallback={this.getRoomDetails}
                 />
             </Grid>
             <Grid item xs={12}>
@@ -105,7 +105,7 @@ class Room extends React.Component {
                 </Grid>
                 <Grid item xs={12}>
                     <Typography variant="h6" component="h6">
-                        Guest Can Pause: {this.state.guestCanPause.toString()}
+                        Guest Can Pause: {this.state.guestsCanPause.toString()}
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
