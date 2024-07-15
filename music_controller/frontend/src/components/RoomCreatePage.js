@@ -140,7 +140,7 @@ class RoomCreatePage extends Component {
                         <FormHelperText>Guest Control of Playback State</FormHelperText>
                         <RadioGroup
                             row
-                            defaultValue={this.props.guestsCanPause.toString()}
+                            value={this.state.guestsCanPause.toString()}
                             onChange={this.handleGuestsCanPauseChange}
                         >
                             <FormControlLabel
