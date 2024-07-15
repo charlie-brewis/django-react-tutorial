@@ -72,7 +72,7 @@ class Room extends React.Component {
                 <RoomCreatePage
                     update={true}
                     votesToSkip={this.state.votesToSkip}
-                    guestCanPause={this.state.guestCanPause}
+                    guestsCanPause={this.state.guestCanPause}
                     roomCode={this.roomCode}
                     updateCallback={() => {}}
                 />
