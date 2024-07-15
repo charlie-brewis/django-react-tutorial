@@ -12,6 +12,7 @@ import {
     Radio,
     RadioGroup,
     Collapse,
+    Alert,
 } from "@mui/material";
 
 class RoomCreatePage extends Component {
@@ -127,7 +128,25 @@ class RoomCreatePage extends Component {
             <Grid container spacing={1} align="center">
                 <Grid item xs={12}>
                     <Collapse in={this.state.errorMessage != "" || this.state.successMessage != ""}>
-                        {this.state.successMessage}
+                        {this.state.successMessage != "" ? (
+                            <Alert
+                                severity="success"
+                                onClose={() => {
+                                    this.setState({ successMessage: "" });
+                                }}
+                            >
+                                {this.state.successMessage}
+                            </Alert>
+                        ) : (
+                            <Alert
+                                severity="error"
+                                onClose={() => {
+                                    this.setState({ errorMessage: "" });
+                                }}
+                            >
+                                {this.state.errorMessage}
+                            </Alert>
+                        )}
                     </Collapse>
                 </Grid>
                 <Grid item xs={12}>
